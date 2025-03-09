@@ -1,1 +1,168 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>fr. 2 Morel di Lutazio Catulo - Mappatura Interattiva</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; 
+      padding: 0; 
+      /* Sfondo che richiama i colori di un'alba */
+      background: linear-gradient(to bottom, #FF9A8B, #FAD0C4);
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    .columns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .column {
+      flex: 1;
+      min-width: 300px;
+    }
+    .latin, .italian {
+      margin-bottom: 1em;
+      line-height: 1.6;
+    }
+    /* Stile per l'evidenziazione */
+    .highlight {
+      background-color: yellow;
+      transition: background-color 0.2s ease-out;
+    }
+    span[data-segment],
+    span[data-group] {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>fr. 2 Morel di Lutazio Catulo</h1>
+    <div class="columns">
+      <!-- Colonna SINISTRA: Testo latino con segmenti -->
+      <div class="column">
+        <h2>Testo latino</h2>
+        <div class="latin">
+          <!-- Riga 1 -->
+          <p>
+            <span data-segment="1">Consisteram,</span>
+            <span data-segment="2">exorientem</span>
+            <span data-segment="3">Auroram</span>
+            <span data-segment="4">forte</span>
+            <span data-segment="5">salutans,</span>
+          </p>
+          <!-- Riga 2 -->
+          <p>
+            <span data-segment="6">cum</span>
+            <span data-segment="7">subito</span>
+            <span data-segment="8">a laeva</span>
+            <span data-segment="9">Roscius</span>
+            <span data-segment="10">exoritur.</span>
+          </p>
+          <!-- Riga 3: "Pace" e "vestra:" condividono lo stesso gruppo -->
+          <p>
+            <span data-segment="11" data-group="pave">Pace</span>
+            <span data-segment="12">mihi</span>
+            <span data-segment="13">liceat,</span>
+            <span data-segment="14">caelestes,</span>
+            <span data-segment="15">dicere</span>
+            <span data-segment="16" data-group="pave">vestra:</span>
+          </p>
+          <!-- Riga 4 -->
+          <p>
+            <span data-segment="17">mortalis</span>
+            <span data-segment="18">paruit</span>
+            <span data-segment="19">pulcrior</span>
+            <span data-segment="20">esse</span>
+            <span data-segment="21">deo.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Colonna DESTRA: Traduzione italiana con segmenti corrispondenti -->
+      <div class="column">
+        <h2>Testo italiano</h2>
+        <div class="italian">
+          <!-- Riga 1 (mapping segmenti 1-5) -->
+          <p>
+            <span data-segment="1">Io mi ero fermato,</span>
+            <span data-segment="5">salutando</span>
+            <span data-segment="4">per caso</span>
+            <span data-segment="3">l’Aurora</span>
+            <span data-segment="2">che sorge,</span>
+          </p>
+          <!-- Riga 2 (mapping segmenti 6-10) -->
+          <p>
+            <span data-segment="6">quando</span>
+            <span data-segment="7">all’improvviso,</span>
+            <span data-segment="8">da sinistra,</span>
+            <span data-segment="9">Roscio</span>
+            <span data-segment="10">sorge.</span>
+          </p>
+          <!-- Riga 3: Il segmento corrispondente per "pace" e "vestra" -->
+          <p>
+            <span data-segment="11" data-group="pave">Con la vostra benevola pace,</span>
+            <span data-segment="12">mi</span>
+            <span data-segment="13">sia lecito</span>
+            <span data-segment="16">o celesti,</span>
+            <span data-segment="15">dire:</span>
+            <span data-segment="14"></span>
+          </p>
+          <!-- Riga 4 (mapping segmenti 17-21) con inversione "più bello" e "essere" -->
+          <p>
+            <span data-segment="17">un mortale</span>
+            <span data-segment="18">parve</span>
+            <span data-segment="19">essere</span>
+            <span data-segment="20">più bello</span>
+            <span data-segment="21">di un dio.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT per l'effetto hover -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const segments = document.querySelectorAll("span[data-segment], span[data-group]");
+      segments.forEach(segment => {
+        segment.addEventListener("mouseover", function() {
+          // Se l'elemento appartiene a un gruppo, evidenzia tutti quelli dello stesso gruppo
+          if (segment.hasAttribute("data-group")) {
+            let groupValue = segment.getAttribute("data-group");
+            let matchedGroup = document.querySelectorAll("[data-group='" + groupValue + "']");
+            matchedGroup.forEach(m => m.classList.add("highlight"));
+          }
+          // Evidenzia anche gli elementi con lo stesso data-segment
+          let segValue = segment.getAttribute("data-segment");
+          let matchedSegment = document.querySelectorAll("[data-segment='" + segValue + "']");
+          matchedSegment.forEach(m => m.classList.add("highlight"));
+        });
+        segment.addEventListener("mouseout", function() {
+          if (segment.hasAttribute("data-group")) {
+            let groupValue = segment.getAttribute("data-group");
+            let matchedGroup = document.querySelectorAll("[data-group='" + groupValue + "']");
+            matchedGroup.forEach(m => m.classList.remove("highlight"));
+          }
+          let segValue = segment.getAttribute("data-segment");
+          let matchedSegment = document.querySelectorAll("[data-segment='" + segValue + "']");
+          matchedSegment.forEach(m => m.classList.remove("highlight"));
+        });
+      });
+    });
+  </script>
+</body>
+</html>
 
